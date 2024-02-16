@@ -4,7 +4,7 @@ class AdminController < ApplicationController
 
   def index
     @orders = Order.where(fulfilled: false).order(created_at: :desc).take(5)
-    @quick_stats = { 
+    @quick_stats = {
       sales: Order.where(created_at: Time.now.midnight..Time.now).count,
       revenue: Order.where(created_at: Time.now.midnight..Time.now).sum(:total)&.round(),
       avg_sale: Order.where(created_at: Time.now.midnight..Time.now).average(:total)&.round(),
@@ -14,7 +14,7 @@ class AdminController < ApplicationController
     @orders_by_day = @orders_by_day.group_by { |order| order.created_at.to_date }
     @revenue_by_day = @orders_by_day.map { |day, orders| [day.strftime("%A"), orders.sum(&:total)] }
     if @revenue_by_day.count < 7
-      days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+      days_of_week = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
       data_hash = @revenue_by_day.to_h
       current_day = Date.today.strftime("%A")
@@ -25,7 +25,7 @@ class AdminController < ApplicationController
 
       complete_ordered_array_with_current_last = ordered_days_with_current_last.map{ |day| [day, data_hash.fetch(day, 0)] }
 
-      @revenue_by_day = complete_ordered_array_with_current_last 
+      @revenue_by_day = complete_ordered_array_with_current_last
     end
   end
 end

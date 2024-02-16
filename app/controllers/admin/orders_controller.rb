@@ -1,4 +1,4 @@
-class Admin::OrdersController < AdminController 
+class Admin::OrdersController < AdminController
   before_action :set_admin_order, only: %i[ show edit update destroy ]
 
   # GET /admin/orders or /admin/orders.json
@@ -26,7 +26,7 @@ class Admin::OrdersController < AdminController
 
     respond_to do |format|
       if @admin_order.save
-        format.html { redirect_to admin_order_url(@admin_order), notice: "Order was successfully created." }
+        format.html { redirect_to admin_order_url(@admin_order), notice: "La orden fue creada exitosamente." }
         format.json { render :show, status: :created, location: @admin_order }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class Admin::OrdersController < AdminController
   def update
     respond_to do |format|
       if @admin_order.update(admin_order_params)
-        format.html { redirect_to admin_order_url(@admin_order), notice: "Order was successfully updated." }
+        format.html { redirect_to admin_order_url(@admin_order), notice: "La orden fue actualizada exitosamente." }
         format.json { render :show, status: :ok, location: @admin_order }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class Admin::OrdersController < AdminController
     @admin_order.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_orders_url, notice: "Order was successfully destroyed." }
+      format.html { redirect_to admin_orders_url, notice: "La orden fue eliminada exitosamente." }
       format.json { head :no_content }
     end
   end
@@ -66,6 +66,6 @@ class Admin::OrdersController < AdminController
 
     # Only allow a list of trusted parameters through.
     def admin_order_params
-      params.require(:order).permit(:customer_email, :fulfilled, :total, :address)
+      params.require(:order).permit(:customer_name, :customer_phone, :customer_email, :fulfilled, :total, :address)
     end
 end

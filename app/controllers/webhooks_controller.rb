@@ -1,28 +1,32 @@
 class WebhooksController < ApplicationController
   skip_forgery_protection
 
-  def stripe
-    stripe_secret_key = Rails.application.credentials.dig(:stripe, :secret_key)
-    Stripe.api_key = stripe_secret_key
-    payload = request.body.read
-    sig_header = request.env["HTTP_STRIPE_SIGNATURE"]
-    endpoint_secret = Rails.application.credentials.dig(:stripe, :webhook_secret) 
-    event = nil
+  def paypal
+    # Establece la autenticación con PayPal usando las credenciales adecuadas
+    paypal_client_id = Rails.application.credentials.dig(:paypal, :client_id)
+    paypal_secret = Rails.application.credentials.dig(:paypal, :secret)
 
-    begin
-      event = Stripe::Webhook.construct_event(payload, sig_header, endpoint_secret)
-    rescue JSON::ParserError => e
-      status 400
-      return
-    rescue Stripe::SignatureVerificationError => e
-      puts "Webhook signature verification failed."
-      status 400
+    paypal_client = PayPal::Client.new(
+      client_id: paypal_client_id,
+      secret: paypal_secret
+    )
+
+    # Lee el payload del webhook
+    payload = request.body.read
+
+    # Verifica la autenticidad del webhook de PayPal
+    unless paypal_client.verify_webhook_signature(request.headers, payload)
+      head :bad_request
       return
     end
 
-    case event.type 
+    # Parsea el evento recibido
+    event = paypal_client.parse_webhook_event(payload)
+
+    # Maneja el evento según su tipo
+    case event.type
     when 'checkout.session.completed'
-      session = event.data.object 
+      session = event.data.object
       shipping_details = session["shipping_details"]
       puts "Session: #{session}"
       if shipping_details
@@ -43,9 +47,17 @@ class WebhooksController < ApplicationController
         Stock.find(product["metadata"]["product_stock_id"]).decrement!(:amount, item["quantity"])
       end
     else
-      puts "Unhandled event type: #{event.type}" 
+      puts "Unhandled event type: #{event.type}"
     end
 
     render json: { message: 'success' }
+  end
+
+    # Devuelve una respuesta exitosa
+    head :ok
+  rescue StandardError => e
+    # Maneja errores y devuelve una respuesta de error
+    Rails.logger.error "Error processing PayPal webhook: #{e.message}"
+    head :internal_server_error
   end
 end

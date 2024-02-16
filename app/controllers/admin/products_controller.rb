@@ -29,7 +29,7 @@ class Admin::ProductsController < AdminController
 
     respond_to do |format|
       if @admin_product.save
-        format.html { redirect_to admin_product_url(@admin_product), notice: "Product was successfully created." }
+        format.html { redirect_to admin_product_url(@admin_product), notice: "El producto fue creado exitosamente." }
         format.json { render :show, status: :created, location: @admin_product }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -47,7 +47,7 @@ class Admin::ProductsController < AdminController
           @admin_product.images.attach(image)
         end
       end
-      redirect_to admin_products_path, notice: "Product updated successfully"
+      redirect_to admin_products_path, notice: "El producto fue actualizado exitosamente."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -58,7 +58,7 @@ class Admin::ProductsController < AdminController
     @admin_product.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_products_url, notice: "Product was successfully destroyed." }
+      format.html { redirect_to admin_products_url, notice: "El producto fue eliminado exitosamente." }
       format.json { head :no_content }
     end
   end

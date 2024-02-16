@@ -1,11 +1,21 @@
 <div id="<%= dom_id order %>">
   <p class="my-5">
-    <strong class="block font-medium mb-1">Customer email:</strong>
+    <strong class="block font-medium mb-1">Nombres y Apellidos del cliente:</strong>
+    <%= order.customer_name %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Email del cliente:</strong>
+    <%= order.customer_phone %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Teléfono del cliente:</strong>
     <%= order.customer_email %>
   </p>
 
   <p class="my-5">
-    <strong class="block font-medium mb-1">Fulfilled:</strong>
+    <strong class="block font-medium mb-1">Completa:</strong>
     <%= order.fulfilled %>
   </p>
 
@@ -15,22 +25,22 @@
   </p>
 
   <p class="my-5">
-    <strong class="block font-medium mb-1">Address:</strong>
+    <strong class="block font-medium mb-1">Dirección:</strong>
     <%= order.address %>
   </p>
 
   <% if order.order_products.any? %>
-    <strong class="block font-medium mb-1">Products:</strong>
+    <strong class="block font-medium mb-1">Productos:</strong>
     <% order.order_products.each do |op| %>
-      <%= op.product.name %> 
+      <%= op.product.name %>
       <%= op.size %>
       <%= op.quantity %>
     <% end %>
   <% end %>
 
   <% if action_name != "show" %>
-    <%= link_to "Show this order", [:admin, order], class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Edit this order", edit_admin_order_path(order), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to "Mostrar orden", [:admin, order], class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to "Editar orden", edit_admin_order_path(order), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
     <hr class="mt-6">
   <% end %>
 </div>

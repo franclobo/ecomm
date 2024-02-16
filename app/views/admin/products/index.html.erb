@@ -5,16 +5,16 @@
 
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Products</h1>
-    <%= link_to "New product", new_admin_product_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+    <%= link_to "Nuevo producto", new_admin_product_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
   </div>
 
   <div class="flex mt-4 flex-col md:flex-row items-start md:items-center justify-betwee w-full">
     <%= form_with url: admin_products_path, method: :get, class: "flex" do |form| %>
-      <%= form.text_field :query, placeholder: "Search", class: "rounded border-gray-500 text-gray-800" %>
-      <%= form.submit "Submit", class: "cursor-pointer bg-gray-500 ml-2 hover:bg-gray-600 text-white py-2 px-4 rounded" %>
+      <%= form.text_field :query, placeholder: "Buscar", class: "rounded border-gray-500 text-gray-800" %>
+      <%= form.submit "Enviar", class: "cursor-pointer bg-gray-500 ml-2 hover:bg-gray-600 text-white py-2 px-4 rounded" %>
     <% end %>
     <%= form_with url: admin_products_path, method: :get, class: 'flex' do |form| %>
-      <%= form.submit "Clear", class: "cursor-pointer bg-gray-500 ml-0 md:ml-2 mt-2 md:mt-0 hover:bg-gray-600 text-white py-2 px-4 rounded" %>
+      <%= form.submit "Limpiar", class: "cursor-pointer bg-gray-500 ml-0 md:ml-2 mt-2 md:mt-0 hover:bg-gray-600 text-white py-2 px-4 rounded" %>
     <% end %>
   </div>
 
@@ -28,13 +28,13 @@
                 <th scope="col" class="text-sm font-medium text-gray-800 px-6 py-4 text-left">
                 </th>
                 <th scope="col" class="text-sm font-medium text-gray-800 px-6 py-4 text-left">
-                  Name
+                  Nombre
                 </th>
                 <th scope="col" class="text-sm font-medium text-gray-800 px-6 py-4 text-left">
-                  Description 
+                  Descripción
                 </th>
                 <th scope="col" class="text-sm font-medium text-gray-800 px-6 py-4 text-left">
-                  Price 
+                  Precio
                 </th>
               </tr>
             </thead>
@@ -51,7 +51,7 @@
                     <%= p.description %>
                   </td>
                   <td class="px-6 py-4 whitepsace-nowrap tex-sm font-medium text-gray-800">
-                    $<%= (p.price/100.0).to_s %>
+                    $<%= (p.price).to_s %>
                   </td>
                 </tr>
               <% end %>

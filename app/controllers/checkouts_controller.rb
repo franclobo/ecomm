@@ -1,20 +1,26 @@
 class CheckoutsController < ApplicationController
   def create
-    stripe_secret_key = Rails.application.credentials.dig(:stripe, :secret_key)
-    Stripe.api_key = stripe_secret_key
     cart = params[:cart]
-    line_items = cart.map do |item|
-      product = Product.find(item["id"])
-      product_stock = product.stocks.find{ |ps| ps.size == item["size"] }
+    unless cart.is_a?(Array)
+      render json: { error: "Invalid cart data" }, status: 400
+      return
+    end
 
-      if product_stock.amount < item["quantity"].to_i
-        render json: { error: "Not enough stock for #{product.name} in size #{item["size"]}. Only #{product_stock.amount} left." }, status: 400
+    line_items = cart.map do |item|
+      product = Product.find_by(id: item["id"])
+      product_stock = product&.stocks&.find { |ps| ps.size == item["size"] }
+
+      if product.nil? || product_stock.nil?
+        render json: { error: "No stock found for product" }, status: 400
+        return
+      elsif product_stock.amount < item["quantity"].to_i
+        render json: { error: "Not enough stock for product" }, status: 400
         return
       end
 
-      { 
+      {
         quantity: item["quantity"].to_i,
-        price_data: { 
+        price_data: {
           product_data: {
             name: item["name"],
             metadata: { product_id: product.id, size: item["size"], product_stock_id: product_stock.id }
@@ -22,22 +28,24 @@ class CheckoutsController < ApplicationController
           currency: "usd",
           unit_amount: item["price"].to_i
         }
-      } 
+      }
     end
-
     puts "line_items: #{line_items}"
 
-    session = Stripe::Checkout::Session.create(
-      mode: "payment",
-      line_items: line_items,
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
-      shipping_address_collection: { 
-        allowed_countries: ['US', 'CA']
-      }
-    )
+    ppr = PayPal::Recurring.new({
+      :return_url   => "https://ecomm.fly.dev//success",
+      :cancel_url   => "https://ecomm.fly.dev//cancel",
+      :description  => "El total de tu compra es de $#{cart.map{ |item| item["price"].to_i * item["quantity"].to_i }.sum} USD",
+      :amount       => cart.map{ |item| item["price"].to_i * item["quantity"].to_i }.sum,
+      :currency     => "USD"
+    })
 
-    render json: { url: session.url }
+    response = ppr.checkout
+    if response.valid?
+      render json: { url: response.checkout_url }
+    else
+      render json: { error: response.errors.first, status: 400 }
+    end
   end
 
   def success

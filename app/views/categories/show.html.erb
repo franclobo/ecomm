@@ -1,19 +1,19 @@
-<h1>Category Show Page</h1>
+<h1>Categorías</h1>
 <div class="min-h-screen flex justify-center">
   <div class="flex flex-wrap flex-col mt-6">
-    <h2 class="text-lg text-gray-800">Filter</h2>
+    <h2 class="text-lg text-gray-800">Filtro</h2>
     <%= form_with url: category_path(@category), method: :get, class: "flex flex-col"  do |form| %>
-      <%= form.number_field :min, placeholder: "Min Price", class: "border border-gray-800 rounded-md p-2 w-32" %>
-      <%= form.number_field :max, placeholder: "Max Price", class: "border border-gray-800 rounded-md p-2 mt-2 w-32" %>
-      <%= form.submit "Filter", class: "bg-gray-800 text-white rounded-md p-2 mt-2 cursor-pointer" %>
+      <%= form.number_field :min, placeholder: "Precio mínimo", class: "border border-gray-800 rounded-md p-2 w-32" %>
+      <%= form.number_field :max, placeholder: "Precio máximo", class: "border border-gray-800 rounded-md p-2 mt-2 w-32" %>
+      <%= form.submit "Filtrar", class: "bg-gray-800 text-white rounded-md p-2 mt-2 cursor-pointer" %>
     <% end %>
     <%= form_with url: category_path(@category), method: :get, class: "flex flex-col" do |form| %>
-      <%= form.submit "Clear", class: "bg-gray-800 text-white rounded-md p-2 mt-2 cursor-pointer" %>
+      <%= form.submit "Limpiar", class: "bg-gray-800 text-white rounded-md p-2 mt-2 cursor-pointer" %>
     <% end %>
   </div>
   <div class="flex flex-wrap mt-6 gap-10 flex-grow justify-center items-start">
     <% if @products.empty? %>
-      <p class="text-2xl text-left text-gray-800">No products found</p>
+      <p class="text-2xl text-left text-gray-800">No se encontraron productos</p>
     <% else %>
       <% @products.each do |product| %>
         <%= link_to product_path(product) do %>
