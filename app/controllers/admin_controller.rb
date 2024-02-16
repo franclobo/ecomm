@@ -14,7 +14,7 @@ class AdminController < ApplicationController
     @orders_by_day = @orders_by_day.group_by { |order| order.created_at.to_date }
     @revenue_by_day = @orders_by_day.map { |day, orders| [day.strftime("%A"), orders.sum(&:total)] }
     if @revenue_by_day.count < 7
-      days_of_week = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+      days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
       data_hash = @revenue_by_day.to_h
       current_day = Date.today.strftime("%A")
