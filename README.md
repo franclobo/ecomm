@@ -39,6 +39,20 @@
 
 **Ecommerce Ruby** is a project that allows users to buy and sell products online. Users can create an account, add products to their cart, and make purchases. Sellers can create products, manage their inventory, and view sales reports. It uses PayPal for payment processing.
 
+![image](https://github.com/user-attachments/assets/32c2f73c-0b12-413b-a8bf-4531756f620a)
+
+![image](https://github.com/user-attachments/assets/5282b99b-251f-48c3-ab48-d75b048833c9)
+
+![image](https://github.com/user-attachments/assets/a90be7cf-b6fd-48b2-9d49-345298854647)
+
+![image](https://github.com/user-attachments/assets/0e5da11e-2bbd-42a9-8baa-4b7617cbc9d2)
+
+![image](https://github.com/user-attachments/assets/893e8c72-0639-4b49-84f9-24986ec4106b)
+
+![image](https://github.com/user-attachments/assets/48e0e56a-c79d-497a-9be2-ed0b260bf503)
+
+![image](https://github.com/user-attachments/assets/47d1c80c-d663-47b2-aa54-b793ed356f5c)
+
 ## 🛠 Built With <a name="built-with"></a>
 
 ### Tech Stack <a name="tech-stack"></a>
