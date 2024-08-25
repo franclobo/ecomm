@@ -51,10 +51,6 @@ class WebhooksController < ApplicationController
     end
 
     render json: { message: 'success' }
-  end
-
-    # Devuelve una respuesta exitosa
-    head :ok
   rescue StandardError => e
     # Maneja errores y devuelve una respuesta de error
     Rails.logger.error "Error processing PayPal webhook: #{e.message}"
